@@ -1,5 +1,5 @@
 <header class="shadow-md">
-    <nav class="max-w-7xl mx-auto px-5 md:px-10 h-16 flex items-center justify-between w-full">
+    <nav class="container h-16 flex items-center justify-between w-full">
         <img src="../assets/images/logo.svg" alt="" class="w-32">
         <div class="flex items-center gap-x-5">
             <a href="">
@@ -8,7 +8,7 @@
                 </button>
             </a>
             <a href="">
-                <button>
+                <button class="px-4 py-1.5 bg-primary hover:bg-primary/90 text-white rounded-lg">
                     Sign up
                 </button>
             </a>
