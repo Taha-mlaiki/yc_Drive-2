@@ -1,9 +1,4 @@
-<?php
 
-
-
-
-?>
 <?php include "./components/header.php" ?>
 <div class="min-h-screen flex flex-col">
     <?php include "./components/navbar.php" ?>
