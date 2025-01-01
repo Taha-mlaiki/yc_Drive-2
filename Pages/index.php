@@ -20,6 +20,26 @@ require_once "./components/navbar.php";
                 class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"></div>
             <span class="relative z-10 bg-white px-6 font-bold text-xl text-gray-700">Cars</span>
         </span>
+        <div class="flex gap-x-3">
+            <form>
+                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+                    <option selected>Filter by category</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="FR">France</option>
+                    <option value="DE">Germany</option>
+                </select>
+            </form>
+            <form>
+                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+                    <option selected>Filter by modal</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="FR">France</option>
+                    <option value="DE">Germany</option>
+                </select>
+            </form>
+        </div>
         <div class="grid my-16 md:grid-cols-2 gap-10 lg:grid-cols-3 ">
             <article class="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
                 <img
