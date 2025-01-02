@@ -1,25 +1,48 @@
 <?php
-    require_once "./Database.php";
+require_once "./Database.php";
 class User
 {
-    private $nom;
-    private $prenom;
+    private $username;
     private $email;
     private $password;
-    private $role = 2;
-    private $token = null;
-    public function signup($username,$email,$password){
-        
-    }
-    public function login($email,$password){
-        
-    }
-    public function __get($property)
+    private $role;
+    private $db;
+    public function __construct($username, $email, $password)
     {
-        return $this->$property;
+        $this->username = $username;
+        $this->email = $email;
+        $this->password = $password;
     }
-    public function __set($property, $value)
+    static private function getDb()
     {
-        $this->$property = $value;
+        $db = Database::getInstance();
+        $db = $db->getConnection();
+        return $db;
+    }
+    static function checkExist($email)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function signup()
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("INSERT INTO users (username,email,password) VALUES (:username,:email,:password)");
+        $stmt->bindParam(":username", $this->username, PDO::PARAM_STR);
+        $stmt->bindParam(":email", $this->email, PDO::PARAM_STR);
+        $stmt->bindParam(":password", $this->password, PDO::PARAM_STR);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
