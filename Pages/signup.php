@@ -1,98 +1,58 @@
 <?php
-require_once "./components/header.php"
+require_once "./components/header.php";
 ?>
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-lg">
         <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Get started today</h1>
-
         <p class="mx-auto mt-4 max-w-md text-center text-gray-500">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt dolores deleniti
-            inventore quaerat mollitia?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt dolores deleniti inventore quaerat mollitia?
         </p>
-
-        <form action="#" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
-            <p class="text-center text-lg font-medium">Create New Account </p>
+        <form id="signup-form" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
+            <p class="text-center text-lg font-medium">Create New Account</p>
 
             <div>
                 <label for="username" class="sr-only">Username</label>
-
                 <div class="relative">
                     <input
+                        id="username"
                         type="text"
                         class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                         placeholder="Enter username" />
-
-                    <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                        </svg>
-                    </span>
                 </div>
+                <p id="username-error" class="text-xs  ms-1 text-red-500 mt-1"></p>
             </div>
+
             <div>
                 <label for="email" class="sr-only">Email</label>
-
                 <div class="relative">
                     <input
+                        id="email"
                         type="email"
                         class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                         placeholder="Enter email" />
-
-                    <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="size-4 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                        </svg>
-                    </span>
                 </div>
+                <p id="email-error" class="text-xs ms-1 text-red-500 mt-1"></p>
             </div>
 
             <div>
                 <label for="password" class="sr-only">Password</label>
-
                 <div class="relative">
                     <input
+                        id="password"
                         type="password"
                         class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                         placeholder="Enter password" />
-
-                    <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="size-4 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </span>
                 </div>
+                <p id="password-error" class="text-xs ms-1 text-red-500 mt-1"></p>
             </div>
 
             <button
-                type="submit"
+                type="button"
+                id="signup-button"
                 class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white">
                 Sign up
             </button>
-
             <p class="text-center text-sm text-gray-500">
                 Have an account?
                 <a class="underline" href="./login.php">Login</a>
@@ -100,6 +60,86 @@ require_once "./components/header.php"
         </form>
     </div>
 </div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const showToast = (message, type = 'success') => {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `p-4 rounded shadow text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
+
+    document.getElementById('signup-button').addEventListener('click', async function() {
+        // Clear previous errors
+        document.getElementById('username-error').textContent = '';
+        document.getElementById('email-error').textContent = '';
+        document.getElementById('password-error').textContent = '';
+
+        // Get input values
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        // Validate inputs
+        let hasErrors = false;
+
+        if (username === '') {
+            document.getElementById('username-error').textContent = "Username is required.";
+            hasErrors = true;
+        }
+
+        if (email === '') {
+            document.getElementById('email-error').textContent = "Email is required.";
+            hasErrors = true;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('email-error').textContent = "Invalid email format.";
+            hasErrors = true;
+        }
+
+        if (password === '') {
+            document.getElementById('password-error').textContent = "Password is required.";
+            hasErrors = true;
+        } else if (password.length < 6) {
+            document.getElementById('password-error').textContent = "Password must be at least 6 characters long.";
+            hasErrors = true;
+        }
+
+        // Stop submission if there are errors
+        if (hasErrors) return;
+
+        // Send data to signup.php using Axios
+        try {
+            const res = await axios.post('../actions/signup-action.php', {
+                username: username,
+                email: email,
+                password: password
+            });
+            if (res.data.success) {
+                showToast(res.data.success)
+                window.location.href = "./login.php";
+            } else {
+                showToast(res.data.error, "error");
+            }
+
+        } catch (error) {
+            if (error.response) {
+                showToast(error.response.data.error || "An error occurred.", "error");
+            }
+        }
+    });
+</script>
+
 <?php
-require_once "./components/footer.php"
+require_once "./components/footer.php";
 ?>
