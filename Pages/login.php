@@ -1,5 +1,5 @@
 <?php
-require_once "./components/header.php"
+require_once "./components/header.php";
 ?>
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -11,18 +11,22 @@ require_once "./components/header.php"
             inventore quaerat mollitia?
         </p>
 
-        <form action="#" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
-            <p class="text-center text-lg font-medium">Login in to your account</p>
+        <!-- Login Form -->
+        <form
+            id="loginForm"
+            class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
+            onsubmit="return handleSubmit(event)">
+            <p class="text-center text-lg font-medium">Log in to your account</p>
 
             <div>
                 <label for="email" class="sr-only">Email</label>
-
                 <div class="relative">
                     <input
-                        type="email"
+                        type="text"
+                        id="email"
+                        name="email"
                         class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                         placeholder="Enter email" />
-
                     <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -38,17 +42,18 @@ require_once "./components/header.php"
                         </svg>
                     </span>
                 </div>
+                <small id="emailError" class="text-red-600"></small>
             </div>
 
             <div>
                 <label for="password" class="sr-only">Password</label>
-
                 <div class="relative">
                     <input
                         type="password"
+                        id="password"
+                        name="password"
                         class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                         placeholder="Enter password" />
-
                     <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -69,6 +74,7 @@ require_once "./components/header.php"
                         </svg>
                     </span>
                 </div>
+                <small id="passwordError" class="text-red-600"></small>
             </div>
 
             <button
@@ -84,6 +90,74 @@ require_once "./components/header.php"
         </form>
     </div>
 </div>
+
+<!-- Toast Notifications -->
+<div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // Show toast notifications
+    const showToast = (message, type = 'success') => {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `p-4 rounded shadow text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
+
+    // Form validation and submission
+    async function handleSubmit(event) {
+        event.preventDefault();
+        console.log("I m here");
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        let isValid = true;
+
+        // Clear previous errors
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("passwordError").textContent = "";
+
+        // Validate email
+        if (!email) {
+            document.getElementById("emailError").textContent = "Email is required.";
+            isValid = false;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            document.getElementById("emailError").textContent = "Enter a valid email address.";
+            isValid = false;
+        }
+
+        // Validate password
+        if (!password) {
+            document.getElementById("passwordError").textContent = "Password is required.";
+            isValid = false;
+        } else if (password.length < 6) {
+            document.getElementById("passwordError").textContent =
+                "Password must be at least 6 characters long.";
+            isValid = false;
+        }
+        if (!isValid) {
+            return ;
+        }
+        try {
+            const res = await axios.post("../actions/login-action.php",{
+                email,
+                password
+            })
+            if(res.data.success){
+                showToast(res.data.success,"success")
+                window.location.href = "./"
+            }     
+        } catch (error) {
+            console.log(error)
+                showToast(res.data.error,"error")  
+        }
+    }
+</script>
 <?php
-    require_once "./components/footer.php"
+require_once "./components/footer.php"
 ?>
