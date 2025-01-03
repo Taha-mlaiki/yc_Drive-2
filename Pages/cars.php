@@ -65,27 +65,8 @@ include "./components/header.php" ?>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    something
-                                </th>
-                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    something
-                                </th>
-                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    something
-                                </th>
-                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    something
-                                </th>
-                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    something
-                                </th>
-                                <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-primary hover:underline">Edit</a>
-                                </td>
-                            </tr>
+                        <tbody id="car_list">
+
                         </tbody>
                     </table>
                 </div>
@@ -111,44 +92,47 @@ include "./components/header.php" ?>
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5">
+                <form class="p-4 md:p-5" id="carsForm">
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Car name" required="">
+                            <input type="text" name="name" id="car_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Car name">
+                            <span id="nameError" class="text-red-500 text-sm mt-1 hidden">Name is required</span>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                            <input type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                            <input type="number" name="price" id="car_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999">
+                            <span id="priceError" class="text-red-500 text-sm mt-1 hidden">Price is required and must be a number</span>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
-                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
+                            <label for="car_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                            <select id="list_categories" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
                             </select>
+                            <span id="categoryError" class="text-red-500 text-sm mt-1 hidden">Category is required</span>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
-                            <label for="modal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Modal</label>
-                            <input type="number" name="modal" id="modal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="2019" required="">
+                            <label for="car_modal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Modal</label>
+                            <input type="number" name="modal" id="car_modal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="2019">
+                            <span id="modalError" class="text-red-500 text-sm mt-1 hidden">Modal is required</span>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
-                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">availability</label>
-                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option class="text-red-700" value="Unavailable">Unavailable</option>
-                                <option class="text-green-700" value="Available" selected>Available</option>
+                            <label for="car_available" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Availability</label>
+                            <select id="car_available" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option value="0">Unavailable</option>
+                                <option value="1" selected>Available</option>
                             </select>
+                            <span id="availabilityError" class="text-red-500 text-sm mt-1 hidden">Availability is required</span>
                         </div>
                         <div class="col-span-2">
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Car Description</label>
-                            <textarea id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write Car description here"></textarea>
+                            <label for="car_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Car Description</label>
+                            <textarea id="car_description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write Car description here"></textarea>
+                            <span id="descriptionError" class="text-red-500 text-sm mt-1 hidden">Description is required</span>
                         </div>
+                        <input type="hidden" id="car_id_form" value="">
                     </div>
                     <div class="flex justify-end">
-                        <button type="submit" class="text-white inline-flex items-center bg-primary hover:bg-primary/90 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ms-auto">
+                        <button id="modal-btn" type="submit" class="text-white inline-flex items-center bg-primary hover:bg-primary/90 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ms-auto">
                             <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                             </svg>
@@ -160,18 +144,247 @@ include "./components/header.php" ?>
         </div>
     </div>
 </div>
+<div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    const showToast = (message, type = 'success') => {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `p-4 rounded shadow text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
     // review modal
     const reviewModal = document.getElementById("category-modal");
     const btnReviewModal = document.getElementById("open-modal");
     const closeReviewModal = document.getElementById("close-modal");
 
+    const fetchCategories = async () => {
+        const res = await axios.get("../actions/category/view.php")
+        let list_placeholder = document.getElementById("list_categories")
+        list_placeholder.innerHTML = "";
+        let catData = [];
+        if (res.data.categories) {
+            catData = res.data.categories;
+        }
+        catData.map((ele) => {
+            list_placeholder.innerHTML += `
+                <option value=${ele.id}>${ele.name}</option>
+            `
+        })
+    }
+    fetchCategories();
+
     btnReviewModal.addEventListener("click", () => {
         reviewModal.classList.remove("hidden");
+        document.getElementById("car_id_form").value = "";
+        document.getElementById("modal-title").textContent = "Create New Car";
+        document.getElementById("modal-btn").textContent = "Create";
+        // Reset input fields
+        document.getElementById("car_name").value = "";
+        document.getElementById("car_description").value = "";
+        document.getElementById("car_modal").value = "";
+        document.getElementById("car_price").value = "";
     })
     closeReviewModal.addEventListener("click", () => {
         reviewModal.classList.add("hidden");
     })
+
+    document.getElementById("carsForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        let isValid = true;
+        let inputId = document.getElementById("car_id_form")
+        // Name validation
+        let name = document.getElementById("car_name");
+        if (!name.value.trim()) {
+            document.getElementById("nameError").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("nameError").classList.add("hidden");
+        }
+
+        // Price validation
+        let price = document.getElementById("car_price");
+        if (!price.value || isNaN(price.value)) {
+            document.getElementById("priceError").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("priceError").classList.add("hidden");
+        }
+
+        // Category validation
+        let category = document.getElementById("list_categories");
+        if (!category.value) {
+            document.getElementById("categoryError").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("categoryError").classList.add("hidden");
+        }
+
+        // Modal validation
+        let modal = document.getElementById("car_modal");
+        if (!modal.value || isNaN(modal.value)) {
+            document.getElementById("modalError").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("modalError").classList.add("hidden");
+        }
+
+        // Availability validation
+        let availability = document.getElementById("car_available");
+        if (!availability.value) {
+            document.getElementById("availabilityError").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("availabilityError").classList.add("hidden");
+        }
+
+        // Description validation
+        let description = document.getElementById("car_description");
+        if (!description.value.trim()) {
+            document.getElementById("descriptionError").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("descriptionError").classList.add("hidden");
+        }
+        if (!isValid) {
+            return
+        }
+        if (inputId.value === "") {
+            const data = {
+                name: name.value,
+                description: description.value,
+                price: price.value,
+                category: category.value,
+                available: Number(availability.value),
+                modal: modal.value
+            }
+            const res = await axios.post("../actions/cars/create.php", data)
+            if (res.data.success) {
+                name.value = ""
+                description.value = ""
+                price.value = ""
+                category.value = ""
+                availability.value = ""
+                modal.value = ""
+                reviewModal.classList.add("hidden");
+                showToast(res.data.success);
+                fetchCars();
+            } else if (res.data.error) {
+                reviewModal.classList.add("hidden");
+                showToast(res.data.error, "error");
+                fetchCars();
+            } else {
+                console.log(res.data);
+            }
+        } else {
+            const data = {
+                id: inputId.value,
+                name: name.value,
+                description: description.value,
+                price: Number(price.value),
+                category: Number(category.value),
+                available: Number(availability.value),
+                modal: modal.value
+            }
+            const res = await axios.post("../actions/cars/update.php", data);
+            if (res.data.success) {
+                showToast(res.data.success);
+                reviewModal.classList.add("hidden");
+                inputId.value = "";
+                name.value = "";
+                description.value = "";
+                price.value = "";
+                modal.value = "";
+                fetchCars();
+            } else {
+                console.log(res);
+                showToast(res.data.error, "error");
+            }
+        }
+    });
+
+
+    const carListeners = () => {
+        document.querySelectorAll(".edit-car").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const id = btn.getAttribute("data-id");
+                let findedItem = carsData.filter((ele) => ele.id == id)
+                findedItem = findedItem[0];
+                reviewModal.classList.remove("hidden");
+                document.getElementById("modal-title").textContent = "Edit Car";
+                document.getElementById("modal-btn").textContent = `Update`;
+                document.getElementById("car_name").value = findedItem.name;
+                document.getElementById("car_description").value = findedItem.description;
+                document.getElementById("list_categories").value = findedItem.category_id;
+                document.getElementById("car_modal").value = findedItem.modal;
+                document.getElementById("car_price").value = findedItem.price;
+                document.getElementById("car_available").value = findedItem.available.toString();
+                document.getElementById("car_id_form").value = findedItem.id
+            });
+        });
+        document.querySelectorAll(".delete-car").forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                const id = btn.getAttribute("data-id");
+                if (confirm("Are you sure you want to delete this category?")) {
+                    const res = await axios.post("../actions/cars/delete.php", {
+                        id
+                    });
+                    if (res.data.success) {
+                        showToast(res.data.success);
+                        fetchCars();
+                    } else {
+                        showToast(res.data.error, "error");
+                    }
+                }
+            });
+        });
+    };
+
+    let carsData = [];
+    const fetchCars = async () => {
+        const res = await axios.get("../actions/cars/view.php")
+        let car_list = document.getElementById("car_list")
+        car_list.innerHTML = "";
+        if (res.data.cars) {
+            carsData = res.data.cars;
+        }
+        carsData.map((ele) => {
+            car_list.innerHTML += `
+             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${ele.name}
+                                </th>
+                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${ele.modal}
+                                </th>
+                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${ele.price}
+                                </th>
+                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${ele.available ? `<span class="p-1.5 rounded-lg text-green-700 bg-green-150">Available</span>`:`<span class="p-1.5 rounded-lg text-red-700 bg-red-150">Unavailable</span>`}
+                                </th>
+                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${ele.category_name}
+                                </th>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-x-1">
+                                        <button class="edit-car text-green-700 bg-green-300 p-1.5" data-id="${ele.id}">Edit</button>
+                                        <button class="delete-car text-red-700 bg-red-300 p-1.5" data-id="${ele.id}">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+            `
+        })
+        carListeners();
+    }
+    fetchCars();
 </script>
 
 <?php include "./components/footer.php" ?>

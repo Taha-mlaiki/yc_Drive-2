@@ -1,6 +1,6 @@
 <?php
 
-    require_once("../classes/Database.php"); 
+    require_once BASE_PATH . '/classes/Database.php';
 class User
 {
     private $id;
