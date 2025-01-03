@@ -1,4 +1,5 @@
-<?php include "./components/header.php" ?>
+<?php
+include "./components/header.php" ?>
 <div class="min-h-screen flex flex-col">
     <?php include "./components/navbar.php" ?>
     <div class="relative flex flex-1">
@@ -88,10 +89,11 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" id="menuForm" action="" method="post">
+                <form class="p-4 md:p-5" id="categoryForm" action="" method="post">
                     <div class="mb-3">
                         <label for="category_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Nanme</label>
-                        <input type="text" id="category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary" placeholder="lux" required />
+                        <input type="text" id="category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary" placeholder="lux" />
+                        <small id="category_name_error" class="text-red-600 mt-1 hidden"></small>
                     </div>
                     <input
                         id="modal-btn"
@@ -103,6 +105,7 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     // review modal
     const reviewModal = document.getElementById("category-modal");
@@ -115,5 +118,38 @@
     closeReviewModal.addEventListener("click", () => {
         reviewModal.classList.add("hidden");
     })
+
+    document.getElementById("categoryForm").addEventListener("submit",async (e)=>{
+        e.preventDefault();
+        const categoryInput = document.getElementById("category_name");
+        const categoryError = document.getElementById("category_name_error");
+        const categoryName = categoryInput.value.trim();
+
+        let isValid = true;
+
+        // Check if category name is empty
+        if (!categoryName) {
+            isValid = false;
+            categoryError.textContent = "Category name is required.";
+            categoryError.classList.remove("hidden");
+        } 
+        // Check length (e.g., at least 3 characters)
+        else if (categoryName.length < 3) {
+            isValid = false;
+            categoryError.textContent = "Category name must be at least 3 characters.";
+            categoryError.classList.remove("hidden");
+        } else {
+            categoryError.textContent = "";
+            categoryError.classList.add("hidden");
+        }
+        if(!isValid){
+            return
+        }
+        const res = await axios.post("../actions/category/create.php",{
+            categoryName,
+        })
+        
+    })
+
 </script>
 <?php include "./components/footer.php" ?>

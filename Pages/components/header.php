@@ -1,3 +1,6 @@
+<?php
+include "../helpers/middleware.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

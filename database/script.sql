@@ -8,12 +8,16 @@ CREATE TABLE role (
     name VARCHAR(255)
 );
 
+INSERT INTO role (name) VALUES
+ ("user"),
+ ("admin");
+
 CREATE TABLE users (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	username VARCHAR(255),
     email VARCHAR(255),
     password TEXT,
-	role_id INT ,
+	role_id INT DEFAULT 1 ,
     FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
