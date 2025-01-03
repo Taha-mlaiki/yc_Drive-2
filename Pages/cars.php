@@ -46,6 +46,9 @@ include "./components/header.php" ?>
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
+                                    Image
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Name
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -98,6 +101,11 @@ include "./components/header.php" ?>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                             <input type="text" name="name" id="car_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Car name">
                             <span id="nameError" class="text-red-500 text-sm mt-1 hidden">Name is required</span>
+                        </div>
+                        <div class="col-span-2">
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image url</label>
+                            <input type="url" name="name" id="img_url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="type url image">
+                            <span id="img_url_err" class="text-red-500 text-sm mt-1 hidden">Image url is required</span>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -208,6 +216,13 @@ include "./components/header.php" ?>
         } else {
             document.getElementById("nameError").classList.add("hidden");
         }
+        let img_url = document.getElementById("img_url");
+        if (!img_url.value.trim()) {
+            document.getElementById("img_url_err").classList.remove("hidden");
+            isValid = false;
+        } else {
+            document.getElementById("img_url_err").classList.add("hidden");
+        }
 
         // Price validation
         let price = document.getElementById("car_price");
@@ -259,6 +274,7 @@ include "./components/header.php" ?>
         if (inputId.value === "") {
             const data = {
                 name: name.value,
+                imgUrl: img_url.value,
                 description: description.value,
                 price: price.value,
                 category: category.value,
@@ -268,6 +284,7 @@ include "./components/header.php" ?>
             const res = await axios.post("../actions/cars/create.php", data)
             if (res.data.success) {
                 name.value = ""
+                img_url.value = ""
                 description.value = ""
                 price.value = ""
                 category.value = ""
@@ -287,6 +304,7 @@ include "./components/header.php" ?>
             const data = {
                 id: inputId.value,
                 name: name.value,
+                imgUrl: img_url.value,
                 description: description.value,
                 price: Number(price.value),
                 category: Number(category.value),
@@ -299,6 +317,7 @@ include "./components/header.php" ?>
                 reviewModal.classList.add("hidden");
                 inputId.value = "";
                 name.value = "";
+                img_url.value = "";
                 description.value = "";
                 price.value = "";
                 modal.value = "";
@@ -359,6 +378,11 @@ include "./components/header.php" ?>
             car_list.innerHTML += `
              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                 <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div>
+                                        <img src=${ele.imgUrl} class="w-32 rounded-md" />
+                                    </div>
+                                </th>
+                                <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     ${ele.name}
                                 </th>
                                 <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -368,15 +392,15 @@ include "./components/header.php" ?>
                                     ${ele.price}
                                 </th>
                                 <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    ${ele.available ? `<span class="p-1.5 rounded-lg text-green-700 bg-green-150">Available</span>`:`<span class="p-1.5 rounded-lg text-red-700 bg-red-150">Unavailable</span>`}
+                                    ${ele.available ? `<span class="p-1.5 inline-block rounded-lg text-green-700 bg-green-150">Available</span>`:`<span class="p-1.5 rounded-lg text-red-700 bg-red-150 inline-block">Unavailable</span>`}
                                 </th>
                                 <th scope="row" class="px-6 w-full py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     ${ele.category_name}
                                 </th>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-x-1">
-                                        <button class="edit-car text-green-700 bg-green-300 p-1.5" data-id="${ele.id}">Edit</button>
-                                        <button class="delete-car text-red-700 bg-red-300 p-1.5" data-id="${ele.id}">Delete</button>
+                                        <button class="edit-car text-green-700 bg-green-300 p-1.5 rounded-lg" data-id="${ele.id}">Edit</button>
+                                        <button class="delete-car text-red-700 bg-red-300 p-1.5 rounded-lg" data-id="${ele.id}">Delete</button>
                                     </div>
                                 </td>
                             </tr>

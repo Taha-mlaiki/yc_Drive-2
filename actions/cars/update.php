@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $available = validateInput($data["available"]);
         $modal = validateInput($data["modal"]);
         $price = validateInput($data["price"]);
+        $imgUrl = validateInput($data["imgUrl"]);
 
         // Validation for each variable
         if (empty($id) || !is_numeric($id)) {
@@ -25,6 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (empty($name) || strlen($name) > 255) {
             echo json_encode(['error' => 'Name is required and must be less than 255 characters.']);
+            exit();
+        }
+        if (empty($imgUrl) || strlen($imgUrl) < 3) {
+            echo json_encode(['error' => 'imge url is required and must be a valid url.']);
             exit();
         }
 
@@ -53,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
 
-        $newCar = new Car($name,$price,$category_id,$description,$available,$modal);
+        $newCar = new Car($name,$price,$category_id,$description,$available,$modal,$imgUrl);
         $newCar->setId($id);
         if(!$newCar->update()){
             echo json_encode(['error' => 'Somthing went wrong']);

@@ -55,3 +55,6 @@ CREATE TABLE reservation (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (vehicle_id) REFERENCES vehicle(id)
 )
+
+ALTER TABLE vehicle 
+ADD COLUMN imgUrl TEXT 

@@ -4,7 +4,7 @@ require_once BASE_PATH . '/classes/Database.php';
 class Car
 {
     private $id;
-    public function __construct(private $name, private $price, private $category, private $description, private bool $available, private $modal) {}
+    public function __construct(private $name, private $price, private $category, private $description, private bool $available, private $modal,private $imgUrl) {}
 
     static private function getDb()
     {
@@ -35,7 +35,8 @@ class Car
                 price = :price, 
                 category_id = :category_id, 
                 modal = :modal, 
-                available = :available 
+                available = :available ,
+                imgUrl = :imgUrl 
             WHERE id = :id
         ");
         $stmt->bindParam(":name", $this->name);
@@ -44,6 +45,7 @@ class Car
         $stmt->bindParam(":category_id", $this->category);
         $stmt->bindParam(":modal", $this->modal);
         $stmt->bindParam(":available", $this->available);
+        $stmt->bindParam(":imgUrl", $this->imgUrl);
         $stmt->bindParam(":id", $this->id);
 
         $stmt->execute();
@@ -53,19 +55,16 @@ class Car
     {
         $db = self::getDb();
 
-        if (empty($this->name) || empty($this->price)) {
-            throw new Exception("Name and price cannot be empty.");
-        }
-
         $stmt = $db->prepare("
-        INSERT INTO vehicle (name, description, price, category_id, modal, available) 
-        VALUES (:name, :description, :price, :category_id, :modal, :available)");
+        INSERT INTO vehicle (name, description, price, category_id, modal, available,imgUrl) 
+        VALUES (:name, :description, :price, :category_id, :modal, :available,:imgUrl)");
         $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":description", $this->description);
         $stmt->bindParam(":price", $this->price);
         $stmt->bindParam(":category_id", $this->category);
         $stmt->bindParam(":modal", $this->modal);
         $stmt->bindParam(":available", $this->available);
+        $stmt->bindParam(":imgUrl", $this->imgUrl);
 
         $stmt->execute();
         return $stmt->rowCount() > 0;

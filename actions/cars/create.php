@@ -14,10 +14,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $description = validateInput($data["description"]) ?? '';
         $available = validateInput($data["available"]);
         $modal = validateInput($data["modal"]) ?? '';
+        $imgUrl = validateInput($data["imgUrl"]) ?? '';
 
 
         if (empty($name)) {
             echo json_encode(['error' => 'Name field is required']);
+            exit();
+        }
+        if (empty($imgUrl)) {
+            echo json_encode(['error' => 'imge url is required and must be a valid url.']);
             exit();
         }
 
@@ -40,8 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
 
-        $newCar = new Car($name,$price,$category,$description,$available,$modal);
-        if($newCar->save()){
+        $newCar = new Car($name, $price, $category, $description, $available, $modal, $imgUrl);
+        if ($newCar->save()) {
             echo json_encode(['success' => 'Car created successfully']);
         }
     } catch (\Throwable $th) {
