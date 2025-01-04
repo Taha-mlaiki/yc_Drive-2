@@ -61,3 +61,6 @@ ADD COLUMN imgUrl TEXT
 
 ALTER TABLE review 
 MODIFY COLUMN star FLOAT
+
+ALTER TABLE reservation 
+ADD COLUMN status ENUM("Pending","Accepted","Canceled") DEFAULT "Pending" 

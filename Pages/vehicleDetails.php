@@ -278,7 +278,7 @@ require_once "./components/navbar.php";
                 bookModal.classList.add("hidden");
                 window.location.reload();
             }else {
-                showToast(res.data.error)
+                showToast(res.data.error,"error")
                 window.location.reload();
             }
         } catch (error) {
@@ -300,7 +300,7 @@ require_once "./components/navbar.php";
                 reviewModal.classList.add("hidden");
                 window.location.reload();
             }else {
-                showToast(res.data.error)
+                showToast(res.data.error,'error')
             }
         } catch (error) {
             console.log(error)

@@ -3,10 +3,7 @@
 require_once 'Database.php';
 class Reservation
 {
-    public function __construct(private $place,private $date,private $userId,private $carId)
-    {
-        
-    }
+    public function __construct(private $place, private $date, private $userId, private $carId) {}
     static private function getDb()
     {
         $db = Database::getInstance();
@@ -34,29 +31,38 @@ class Reservation
         $stmt->bindParam(":date", $this->date);
         $stmt->bindParam(":user_id", $this->userId);
         $stmt->bindParam(":vehicle_id", $this->carId);
-        $stmt->execute(); 
-        return $stmt->rowCount() > 0 ;
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 
-    static public function getAll()
+    static public function getAllUserReserv($id)
     {
         $db = self::getDb();
-        $stmt = $db->prepare("SELECT * FROM category");
+        $stmt = $db->prepare("SELECT r.id AS reservation_id, r.place AS reservation_place,
+            r.date AS reservation_date,
+            r.status AS reservation_status,
+            v.name AS car_name,
+            v.price AS car_price,
+            v.imgUrl AS car_image,
+            v.modal AS car_modal,
+            c.name AS category
+            FROM reservation r JOIN
+            vehicle v ON r.vehicle_id = v.id
+            JOIN
+            category c ON c.id = v.category_id
+            WHERE r.user_id = :id
+        ");
+        $stmt->bindParam(":id", $id);
         $stmt->execute();
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
-    static public function deleteOne($id)
-    {
-        $db = self::getDb();
-        $stmt = $db->prepare("DELETE FROM category WHERE id = :id");
-        $stmt->bindParam(":id", $id);
 
+    static public function cancelReservation ($id){
+        $db = self::getDb();
+        $stmt = $db->prepare("UPDATE reservation SET status = 'Canceled' WHERE id = :id");
+        $stmt->bindParam(":id",$id);
         $stmt->execute();
-        if ($stmt->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return $stmt->rowCount() > 0;
     }
 }
