@@ -13,9 +13,6 @@ require_once "./components/navbar.php";
     $userId = $_SESSION["id"];
     $carId = $car["vehicle_id"];
     $isReserved = Car::isUserReservedCard($carId,$userId);
-
-    echo $isReserved;
-
 ?>
 <main class="container">
     <div class="grid md:grid-cols-2 mt-16 xl:mt-24 gap-10">
@@ -43,7 +40,7 @@ require_once "./components/navbar.php";
 
             <div class="flex items-center justify-between">
                 <span class="text-2xl font-bold"><?= $car["vehicle_price"] ?>$</span>
-                <button onclick="reserveCar(json_encode($car['vehicle_id']))" id="bookBtn-modal" class="px-2 py-1.5 rounded-lg text-white bg-primary hover:bg-primary/90">
+                <button id="bookBtn-modal" class="px-2 py-1.5 rounded-lg text-white bg-primary hover:bg-primary/90">
                     Book now
                 </button>
             </div>
@@ -56,7 +53,7 @@ require_once "./components/navbar.php";
             <button id="btn-modal" class="rounded-xl p-2 hover:bg-gray-100 transition text-primary font-semibold">Add my review</button>
             <?php endif ;?>
         </div>
-        <div class="flex flex-col gap-y-5 mt-10">
+        <div class="flex flex-col gap-y-5 my-10">
             <?php foreach ($car["reviews"] as $review) : ?>
                 <div>
                     <div class="flex items-center">
@@ -231,7 +228,7 @@ require_once "./components/navbar.php";
         bookModal.classList.add("hidden");
     })
 
-    const form = document.getElementById("reservationForm");
+    const bookingForm = document.getElementById("reservationForm");
     const dateInput = document.getElementById("reservation_date");
     const placeInput = document.getElementById("reservation_time");
     const dateError = document.getElementById("dateError");
@@ -242,7 +239,8 @@ require_once "./components/navbar.php";
     const carId = document.getElementById("car_id").value
 
 
-    form.addEventListener("submit", (e) => {
+    bookingForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
         let valid = true;
 
         // Validate Booking Date
@@ -264,7 +262,27 @@ require_once "./components/navbar.php";
         }
 
         if (!valid) {
-            e.preventDefault(); // Prevent form submission if invalid
+           return  // Prevent form submission if invalid
+        }
+        try {
+            
+            const data = {
+                userId,
+                carId,
+                place : placeInput.value,
+                date : dateInput.value
+            }
+            const res = await axios.post("../actions/reservation/create.php",data)
+            if(res.data.success){
+                showToast(res.data.success)
+                bookModal.classList.add("hidden");
+                window.location.reload();
+            }else {
+                showToast(res.data.error)
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error)
         }
     });
 
@@ -275,10 +293,18 @@ require_once "./components/navbar.php";
             carId,
             star : ratingInput.value
         }
-        console.log(data);
-
-        const res = await axios.post("../actions/cars/add_review.php",data);
-        console.log(res);
+        try {
+            const res = await axios.post("../actions/cars/add_review.php",data); 
+            if(res.data.success){
+                showToast(res.data.success)
+                reviewModal.classList.add("hidden");
+                window.location.reload();
+            }else {
+                showToast(res.data.error)
+            }
+        } catch (error) {
+            console.log(error)
+        }
 
     })
 </script>
