@@ -344,6 +344,7 @@ include "./components/header.php" ?>
                 document.getElementById("list_categories").value = findedItem.category_id;
                 document.getElementById("car_modal").value = findedItem.modal;
                 document.getElementById("car_price").value = findedItem.price;
+                document.getElementById("img_url").value = findedItem.imgUrl;
                 document.getElementById("car_available").value = findedItem.available.toString();
                 document.getElementById("car_id_form").value = findedItem.id
             });
@@ -368,7 +369,7 @@ include "./components/header.php" ?>
 
     let carsData = [];
     const fetchCars = async () => {
-        const res = await axios.get("../actions/cars/view.php")
+        const res = await axios.get("../actions/cars/viewAll.php")
         let car_list = document.getElementById("car_list")
         car_list.innerHTML = "";
         if (res.data.cars) {

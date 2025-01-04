@@ -156,6 +156,14 @@ class Car
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
+    static public function getAvailable()
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT v.*, c.name AS category_name FROM vehicle v JOIN category c ON v.category_id = c.id WHERE v.available = true");
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
     static public function deleteOne($id)
     {
         $db = self::getDb();
