@@ -21,17 +21,17 @@ require_once "./components/navbar.php";
         <div class="flex gap-x-3">
             <form>
                 <select id="category_list" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
-                </select>
+                <option selected >Filter by category</option>
+            </select>
             </form>
             <form>
-                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
-                    <option selected>Filter by modal</option>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="FR">France</option>
-                    <option value="DE">Germany</option>
-                </select>
+                <select id="modal_list" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+                <option selected >Filter by modal</option>
+            </select>
             </form>
+            <button onclick="clearFilter()" class="px-2 py-2 rounded-lg bg-gray-200 border text-sm">
+                Clear Filter
+            </button>
         </div>
         <div id="cars_list" class="grid my-16 md:grid-cols-2 gap-10 lg:grid-cols-3 ">
 
@@ -79,7 +79,13 @@ require_once "./components/navbar.php";
     let carsData = [];
     let filteredData = [];
     let category_list = document.getElementById("category_list");
+    let modal_list = document.getElementById("modal_list");
 
+
+    const clearFilter = ()=>{
+        filteredData = carsData;
+        appendData();
+    }
     const appendCategories = ()=> {
         let categories = Array.from(new Set(carsData.map(ele=> ele.category_name)));
         category_list.innerHTML = ""
@@ -94,18 +100,37 @@ require_once "./components/navbar.php";
 
     const watchCategory = ()=>{
         category_list.addEventListener("change",(e)=>{
-            filteredData = carsData;
-            filteredData = filteredData.filter((ele)=> ele.category_name === e.target.value)
+            filteredData = carsData.filter((ele)=> ele.category_name == e.target.value)
             appendData();
         })
     }
+    const appendModal = ()=> {
+        let modals = Array.from(new Set(carsData.map(ele=> ele.modal)));
+        modal_list.innerHTML = ""
+        modals.map((cat)=> {
+            let option = document.createElement("option");
+            option.value = cat;
+            option.innerHTML = cat;
+            modal_list.appendChild(option);
+        })
+        watchModal();
+    }
+
+    const watchModal = ()=>{
+        modal_list.addEventListener("change",(e)=>{
+            console.log(e.target.value);
+            filteredData = carsData.filter((ele)=> ele.modal == e.target.value)
+            appendData();
+        })
+    } 
 
     const fetchCarsData = async () => {
         const res = await axios.get("../actions/cars/view.php")
         carsData = res.data.cars
-        filteredData = carsData;
+        filteredData = carsData
         appendData();
         appendCategories();
+        appendModal();
     }
     fetchCarsData();
 
