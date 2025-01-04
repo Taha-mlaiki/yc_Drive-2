@@ -7,7 +7,9 @@ if (isset($_POST["logout"])) {
 
 <header class="shadow-md">
     <nav class="container h-16 flex items-center justify-between w-full">
-        <img src="../assets/images/logo.svg" alt="" class="w-32">
+        <a href="./">
+            <img src="../assets/images/logo.svg" alt="" class="w-32">
+        </a>
         <?php if (!$role) : ?>
             <div class="flex items-center gap-x-5">
                 <a href="">
