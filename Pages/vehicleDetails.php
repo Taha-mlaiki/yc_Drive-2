@@ -1,28 +1,46 @@
 <?php
+if (file_exists("../classes/Car.php")) {
+    include   "../classes/Car.php";
+};
+$id = $_GET["id"];
+if (isset($id)) {
+    $car = Car::getOneById($id);
+}
+
 require_once "./components/header.php";
 require_once "./components/navbar.php";
+
+    $userId = $_SESSION["id"];
+    $carId = $car["vehicle_id"];
+
 ?>
 <main class="container">
     <div class="grid md:grid-cols-2 mt-16 xl:mt-24 gap-10">
         <div class="w-full flex flex-col items-center">
-            <img src="../assets/images/rangerover.jpg" alt="" class="rounded-md w-full my-auto">
+            <img src='<?= $car["vehicle_image"] ?>' alt="" class="rounded-md w-full my-auto">
         </div>
         <div class="h-full  flex flex-col justify-between py-3">
             <div class="mb-10">
-                <h1 class="text-2xl lg:text-4xl mb-3 font-bold">Title of this car is gonna be here</h1>
-                <p class="text-neutral-700 text-sm mb-4 lg:max-w-[90%]">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam doloribus sed provident delectus placeat ipsa minus ullam! Cupiditate omnis nisi tenetur beatae similique, dolore, sequi repellendus doloremque nobis minima sed!</p>
-                <span class="inline-block p-1 font-bold rounded-xl text-xs text-green-700 bg-green-300">
-                    Available
-                </span>
+                <h1 class="text-2xl lg:text-4xl mb-3 font-bold"><?= $car["vehicle_name"] ?></h1>
+                <p class="text-neutral-700 text-sm mb-4 lg:max-w-[90%]"><?= $car["vehicle_description"] ?></p>
+                <?php if ($car["available"]) : ?>
+                    <span class="inline-block p-1 font-bold rounded-xl text-xs text-green-700 bg-green-300">
+                        Available
+                    </span>
+                <?php else : ?>
+                    <span class="inline-block p-1 font-bold rounded-xl text-xs text-red-700 bg-red-300">
+                        Unavailable
+                    </span>
+                <?php endif; ?>
                 <div class="mt-3">
                     <span class="font-bold text-blue-500">Modal :</span>
-                    2022
+                    <?= $car["modal"] ?>
                 </div>
             </div>
 
             <div class="flex items-center justify-between">
-                <span class="text-2xl font-bold">120$</span>
-                <button id="bookBtn-modal" class="px-2 py-1.5 rounded-lg text-white bg-primary hover:bg-primary/90">
+                <span class="text-2xl font-bold"><?= $car["vehicle_price"] ?>$</span>
+                <button onclick="reserveCar(json_encode($car['vehicle_id']))" id="bookBtn-modal" class="px-2 py-1.5 rounded-lg text-white bg-primary hover:bg-primary/90">
                     Book now
                 </button>
             </div>
@@ -34,29 +52,44 @@ require_once "./components/navbar.php";
             <button id="btn-modal" class="rounded-xl p-2 hover:bg-gray-100 transition text-primary font-semibold">Add my review</button>
         </div>
         <div class="flex flex-col gap-y-5">
-            <div class="flex items-center gap-x-3 my-5">
-                <button type="button" id="user-menu-button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-                    <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="user photo">
-                </button>
-                <div class="flex items-center">
-                    <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                    </svg>
-                    <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                    </svg>
-                    <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                    </svg>
-                    <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                    </svg>
-                    <svg class="w-4 h-4 ms-1 text-gray-300 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                    </svg>
+            <?php foreach ($car["reviews"] as $review) : ?>
+                <div class="my-5">
+                    <div class="flex items-center">
+                        <button type="button" id="user-menu-button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                            <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="user photo">
+                        </button>
+                        <h4 class="text-neutral-700 font-semibold ms-3">
+                            <?= $review["user"]["user_name"] ?>
+                        </h4>
+                    </div>
+                    <div class="flex ms-8 mt-2 items-center">
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <?php if ($i <= floor($review["stars"])): ?>
+                                <!-- Fully filled star -->
+                                <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            <?php elseif ($i === ceil($review["stars"]) && $review["stars"] - floor($review["stars"]) > 0): ?>
+                                <!-- Half-filled star -->
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <defs>
+                                        <linearGradient id="half-star" x1="0" x2="22" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+                                            <stop offset="50%" stop-color="#F59E0B" />
+                                            <stop offset="50%" stop-color="#E5E7EB" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" fill="url(#half-star)" />
+                                </svg>
+                            <?php else: ?>
+                                <!-- Empty star -->
+                                <svg class="w-4 h-4 ms-1 text-gray-300 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                    </div>
                 </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -129,9 +162,11 @@ require_once "./components/navbar.php";
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" id="menuForm" action="" method="post">
+                <form id="reveiw_form" class="p-4 md:p-5" id="menuForm" action="" method="post">
                     <input id="pi_input" type="range" min="0" max="5" step="0.5" />
                     <p>Value: <output id="value"></output></p>
+                    <input type="hidden" id="user_id" value="<?= $userId ?>">
+                    <input type="hidden" id="car_id" value="<?= $carId ?>">
                     <input
                         id="modal-btn"
                         type="submit"
@@ -143,9 +178,24 @@ require_once "./components/navbar.php";
     </div>
 
 </main>
+<div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    const value = document.querySelector("#value");
-    const input = document.querySelector("#pi_input");
+    const showToast = (message, type = 'success') => {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `p-4 rounded shadow text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
+    const rating_value = document.querySelector("#value");
+    const ratingInput = document.querySelector("#pi_input");
     // review modal
     const reviewModal = document.getElementById("review-modal");
     const btnReviewModal = document.getElementById("btn-modal");
@@ -156,9 +206,9 @@ require_once "./components/navbar.php";
     const closeBookModal = document.getElementById("closeBook-modal")
 
 
-    value.textContent = input.value;
-    input.addEventListener("input", (event) => {
-        value.textContent = event.target.value;
+    rating_value.textContent = ratingInput.value;
+    ratingInput.addEventListener("input", (event) => {
+        rating_value.textContent = event.target.value;
     });
 
     btnReviewModal.addEventListener("click", () => {
@@ -179,6 +229,11 @@ require_once "./components/navbar.php";
     const placeInput = document.getElementById("reservation_time");
     const dateError = document.getElementById("dateError");
     const placeError = document.getElementById("timeError");
+    const reviewForm = document.getElementById("reveiw_form")
+
+    const userId = document.getElementById("user_id").value
+    const carId = document.getElementById("car_id").value
+
 
     form.addEventListener("submit", (e) => {
         let valid = true;
@@ -205,6 +260,20 @@ require_once "./components/navbar.php";
             e.preventDefault(); // Prevent form submission if invalid
         }
     });
+
+    reviewForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = {
+            userId,
+            carId,
+            star : ratingInput.value
+        }
+        console.log(data);
+
+        const res = await axios.post("../actions/cars/add_review.php",data);
+        console.log(res);
+
+    })
 </script>
 <?php
 require_once "./components/navbar.php";

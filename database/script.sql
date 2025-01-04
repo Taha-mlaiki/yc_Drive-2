@@ -58,3 +58,6 @@ CREATE TABLE reservation (
 
 ALTER TABLE vehicle 
 ADD COLUMN imgUrl TEXT 
+
+ALTER TABLE review 
+MODIFY COLUMN star FLOAT
