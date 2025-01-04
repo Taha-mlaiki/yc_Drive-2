@@ -57,10 +57,41 @@ class Reservation
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
+    static public function getAllReservations()
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT r.id AS reservation_id, r.place AS reservation_place,
+            r.date AS reservation_date,
+            r.status AS reservation_status,
+            u.username AS user_name,
+            u.email AS user_email,
+            v.name AS car_name,
+            v.price AS car_price,
+            v.imgUrl AS car_image,
+            v.modal AS car_modal,
+            c.name AS category
+            FROM reservation r JOIN
+            vehicle v ON r.vehicle_id = v.id
+            JOIN
+            category c ON c.id = v.category_id
+            JOIN 
+            users u ON r.user_id = u.id
+        ");
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
 
     static public function cancelReservation ($id){
         $db = self::getDb();
         $stmt = $db->prepare("UPDATE reservation SET status = 'Canceled' WHERE id = :id");
+        $stmt->bindParam(":id",$id);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+    static public function acceptReservation ($id){
+        $db = self::getDb();
+        $stmt = $db->prepare("UPDATE reservation SET status = 'Accepted' WHERE id = :id");
         $stmt->bindParam(":id",$id);
         $stmt->execute();
         return $stmt->rowCount() > 0;

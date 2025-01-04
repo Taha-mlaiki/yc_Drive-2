@@ -1,5 +1,8 @@
-<?php 
-include "./components/header.php" ?>
+<?php
+include "./components/header.php";
+require_once "../classes/Reservation.php";
+$reservations = Reservation::getAllReservations();
+?>
 <div class="min-h-screen flex flex-col">
     <?php include "./components/navbar.php" ?>
     <div class="relative flex flex-1">
@@ -94,57 +97,167 @@ include "./components/header.php" ?>
                     </svg>
                     Reservations
                 </h2>
-                <div class="relative overflow-x-auto mt-10 shadow-md sm:rounded-lg">
+                <div class="relative overflow-x-auto  mt-10 shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    user name
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    Image
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Date
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    name
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Place
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    modal
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Car name
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    Category
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    Price $$
+                                </th>
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    User name
+                                </th>
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    User email
+                                </th>
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    date
+                                </th>
+                                <th scope="col" class=" py-3 min-w-[100px]">
+                                    place
+                                </th>
+                                <th scope="col" class=" py-3 min-w-[100px]">
                                     status
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class=" py-3 min-w-[100px]">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    something
-                                </th>
-                                <td class="px-6 py-4">
-                                    something
-                                </td>
-                                <td class="px-6 py-4">
-                                    something
-                                </td>
-                                <td class="px-6 py-4">
-                                    something
-                                </td>
-                                <td class="px-6 py-4">
-                                    something
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
-                            </tr>
+                            <?php if (isset($reservations) || count($reservations) > 0) :  ?>
+                                <?php foreach ($reservations as $reserv): ?>
+                                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            <img src=<?= $reserv["car_image"] ?> class="w-32 rounded-lg">
+                                        </th>
+                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            <?= $reserv["car_name"] ?>
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["car_modal"] ?>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["category"] ?>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["car_price"] ?>$
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["user_name"] ?>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["user_email"] ?>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["reservation_date"] ?>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?= $reserv["reservation_place"] ?>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <?php switch ($reserv["reservation_status"]) {
+                                                case 'Pending':
+                                                    echo "<span class='text-yellow-500 p-1 rounded-xl bg-yellow-100 text-sm'>Pending</span>";
+                                                    break;
+                                                case 'Accepted':
+                                                    echo "<span class='text-green-500 p-1 rounded-xl bg-green-100 text-sm'>Accepted</span>";
+                                                    break;
+                                                case 'Canceled':
+                                                    echo "<span class='text-red-500 p-1 rounded-xl bg-red-100 text-sm'>Canceled</span>";
+                                                    break;
+                                                default:
+                                                    echo "<span class='text-yellow-500 p-1 rounded-xl bg-yellow-100 text-sm'>Pending</span>";
+                                                    break;
+                                            }  ?>
+                                        </td>
+                                        <?php if ($reserv["reservation_status"] !== "Canceled" &&  $reserv["reservation_status"] !== "Accepted") : ?>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-x-3">
+                                                    <button onclick="acceptReserv(<?= json_encode($reserv['reservation_id']) ?>)" class="bg-green-700 p-2 text-white rounded-md">
+                                                        Accept
+                                                    </button>
+                                                    <button onclick="cancelReserv(<?= json_encode($reserv['reservation_id']) ?>)" class="bg-red-700 p-2 text-white rounded-md">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <th colspan="100%" class="text-center text-neutral-700 w-full py-4">
+                                        No reservation available.
+                                    </th>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </main>
+
+
         </div>
     </div>
 </div>
+<div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const showToast = (message, type = 'success') => {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `p-4 rounded shadow text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
+
+    const acceptReserv = async (reservId) => {
+        if (!reservId) {
+            return;
+        }
+        const res = await axios.post("../actions/reservation/accept.php", {
+            reservId
+        })
+        if (res.data.success) {
+            showToast(res.data.success);
+            window.location.reload();
+        } else {
+            showToast(res.data.error, "error")
+        }
+    }
+    const cancelReserv = async (reservId) => {
+        if (!reservId) {
+            return;
+        }
+        const res = await axios.post("../actions/reservation/cancel.php", {
+            reservId
+        })
+        if (res.data.success) {
+            showToast(res.data.success);
+            window.location.reload();
+        } else {
+            showToast(res.data.error, "error")
+        }
+    }
+</script>
 
 <?php include "./components/footer.php" ?>

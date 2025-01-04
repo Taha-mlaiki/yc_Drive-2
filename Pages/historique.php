@@ -134,6 +134,7 @@ $reservations = Reservation::getAllUserReserv($userid);
         })
         if (res.data.success) {
             showToast(res.data.success);
+            window.location.reload();
         } else {
             showToast(res.data.error, "error")
         }
