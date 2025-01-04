@@ -32,7 +32,7 @@ class Car
             LEFT JOIN users u ON  r.user_id = u.id
             WHERE v.id = :id
         ");
-        $stmt->bindParam(":id", $id,PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -64,7 +64,7 @@ class Car
             }
             return $vehicle;
         }
-        return null ;
+        return null;
     }
     public function getVar(string $varname)
     {
@@ -122,18 +122,29 @@ class Car
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
-
-    static public function addReviewStar($carId,$userId,float $star){
+    static public function isUserReservedCard($carId, $userId)
+    {
         $db = self::getDb();
-        $stmt = $db->prepare("INSERT INTO review (vehicle_id,user_id,star) VALUES (:carId,:userId,:star)");
-        $stmt->bindParam(":carId",$carId);
-        $stmt->bindParam(":userId",$userId);
-        $stmt->bindParam(":star",$star);
+        $stmt = $db->prepare("SELECT COUNT(*) FROM users u JOIN reservation r ON r.user_id = u.id JOIN vehicle v ON r.vehicle_id = v.id WHERE v.id = :carId AND u.id = :userId");
+        $stmt->bindParam(":carId", $carId);
+        $stmt->bindParam(":userId", $userId);
         $stmt->execute();
-        if($stmt->rowCount() > 0){
-            return true;
+        $count = $stmt->fetchColumn();
+        return $count > 0;
+    }
+    static public function addReviewStar($carId, $userId, float $star)
+    {
+        $isReservedCar = self::isUserReservedCard($carId, $userId);
+        if ($isReservedCar) {
+            $db = self::getDb();
+            $stmt = $db->prepare("INSERT INTO review (vehicle_id,user_id,star) VALUES (:carId,:userId,:star)");
+            $stmt->bindParam(":carId", $carId);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":star", $star);
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
         }else {
-            return false;
+            throw new Error("This has not reserved the car");
         }
     }
 

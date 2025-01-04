@@ -12,6 +12,9 @@ require_once "./components/navbar.php";
 
     $userId = $_SESSION["id"];
     $carId = $car["vehicle_id"];
+    $isReserved = Car::isUserReservedCard($carId,$userId);
+
+    echo $isReserved;
 
 ?>
 <main class="container">
@@ -49,11 +52,13 @@ require_once "./components/navbar.php";
     <div>
         <div class="flex items-center justify-between mt-8">
             <h2 class="text-xl font-bold">Reviews</h2>
+            <?php if($isReserved):?>
             <button id="btn-modal" class="rounded-xl p-2 hover:bg-gray-100 transition text-primary font-semibold">Add my review</button>
+            <?php endif ;?>
         </div>
-        <div class="flex flex-col gap-y-5">
+        <div class="flex flex-col gap-y-5 mt-10">
             <?php foreach ($car["reviews"] as $review) : ?>
-                <div class="my-5">
+                <div>
                     <div class="flex items-center">
                         <button type="button" id="user-menu-button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                             <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="user photo">
@@ -211,9 +216,11 @@ require_once "./components/navbar.php";
         rating_value.textContent = event.target.value;
     });
 
-    btnReviewModal.addEventListener("click", () => {
-        reviewModal.classList.remove("hidden");
-    })
+    if(btnReviewModal){
+        btnReviewModal.addEventListener("click", () => {
+            reviewModal.classList.remove("hidden");
+        })
+    }
     closeReviewModal.addEventListener("click", () => {
         reviewModal.classList.add("hidden");
     })
