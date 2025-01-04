@@ -96,4 +96,13 @@ class Reservation
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
+
+    static public function reservationStatistiques($status){
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM reservation WHERE status = :status");
+        $stmt->bindParam(":status",$status);
+        $stmt->execute();
+        $res = $stmt->fetchColumn();
+        return $res;
+    }
 }

@@ -72,4 +72,12 @@ class User
         $_SESSION["email"] = $res->email;
         $_SESSION["role"] = $res->role_name;
     }
+
+    static public function userStatistiques($countQuery){
+        $db = self::getDb();
+        $stmt = $db->prepare($countQuery);
+        $stmt->execute();
+        $res = $stmt->fetchColumn();
+        return $res;
+    }
 }
