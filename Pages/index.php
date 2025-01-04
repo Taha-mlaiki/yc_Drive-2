@@ -1,6 +1,7 @@
 <?php
 require_once "./components/header.php";
 require_once "./components/navbar.php";
+
 ?>
 
 <main>
@@ -19,12 +20,7 @@ require_once "./components/navbar.php";
         </span>
         <div class="flex gap-x-3">
             <form>
-                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
-                    <option selected>Filter by category</option>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="FR">France</option>
-                    <option value="DE">Germany</option>
+                <select id="category_list" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
                 </select>
             </form>
             <form>
@@ -81,18 +77,41 @@ require_once "./components/navbar.php";
 <script>
     let cars_list = document.getElementById("cars_list");
     let carsData = [];
+    let filteredData = [];
+    let category_list = document.getElementById("category_list");
+
+    const appendCategories = ()=> {
+        let categories = Array.from(new Set(carsData.map(ele=> ele.category_name)));
+        category_list.innerHTML = ""
+        categories.map((cat)=> {
+            let option = document.createElement("option");
+            option.value = cat;
+            option.innerHTML = cat;
+            category_list.appendChild(option);
+        })
+        watchCategory();
+    }
+
+    const watchCategory = ()=>{
+        category_list.addEventListener("change",(e)=>{
+            filteredData = carsData;
+            filteredData = filteredData.filter((ele)=> ele.category_name === e.target.value)
+            appendData();
+        })
+    }
 
     const fetchCarsData = async () => {
         const res = await axios.get("../actions/cars/view.php")
         carsData = res.data.cars
+        filteredData = carsData;
         appendData();
+        appendCategories();
     }
     fetchCarsData();
 
     const appendData = () => {
         cars_list.innerHTML = "";
-        console.log(carsData);
-        carsData.map((ele) => {
+        filteredData.map((ele) => {
             cars_list.innerHTML += `
                 <article class="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
                 <img
