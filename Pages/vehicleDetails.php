@@ -10,9 +10,9 @@ if (isset($id)) {
 require_once "./components/header.php";
 require_once "./components/navbar.php";
 
-    $userId = $_SESSION["id"];
-    $carId = $car["vehicle_id"];
-    $isReserved = Car::isUserReservedCard($carId,$userId);
+$userId = $_SESSION["id"];
+$carId = $car["vehicle_id"];
+$isReserved = Car::isUserReservedCard($carId, $userId);
 ?>
 <main class="container">
     <div class="grid md:grid-cols-2 mt-16 xl:mt-24 gap-10">
@@ -49,20 +49,29 @@ require_once "./components/navbar.php";
     <div>
         <div class="flex items-center justify-between mt-8">
             <h2 class="text-xl font-bold">Reviews</h2>
-            <?php if($isReserved):?>
-            <button id="btn-modal" class="rounded-xl p-2 hover:bg-gray-100 transition text-primary font-semibold">Add my review</button>
-            <?php endif ;?>
+            <?php if ($isReserved): ?>
+                <button id="btn-modal" class="rounded-xl p-2 hover:bg-gray-100 transition text-primary font-semibold">Add my review</button>
+            <?php endif; ?>
         </div>
         <div class="flex flex-col gap-y-5 my-10">
             <?php foreach ($car["reviews"] as $review) : ?>
                 <div>
-                    <div class="flex items-center">
-                        <button type="button" id="user-menu-button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-                            <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="user photo">
-                        </button>
-                        <h4 class="text-neutral-700 font-semibold ms-3">
-                            <?= $review["user"]["user_name"] ?>
-                        </h4>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <button type="button" id="user-menu-button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                                <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="user photo">
+                            </button>
+                            <h4 class="text-neutral-700 font-semibold ms-3">
+                                <?= $review["user"]["user_name"] ?>
+                            </h4>
+
+                        </div>
+                        <?php if ($userId === $review["user"]["user_id"]) : ?>
+                            <div class="flex items-center gap-x-2">
+                                <button onclick="editReview(<?= json_encode($review['review_id']) ?> , <?= json_encode($review['stars']) ?>)" class="rounded-md p-1 bg-green-600 text-white text-xs">Edit</button>
+                                <button onclick="deleteReview(<?= json_encode($review['review_id']) ?>)" class="rounded-md p-1 bg-red-600 text-white text-xs">Archive</button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="flex ms-8 mt-2 items-center">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -213,8 +222,10 @@ require_once "./components/navbar.php";
         rating_value.textContent = event.target.value;
     });
 
-    if(btnReviewModal){
+    if (btnReviewModal) {
         btnReviewModal.addEventListener("click", () => {
+            isCreate = true;
+            reviewId = null
             reviewModal.classList.remove("hidden");
         })
     }
@@ -237,8 +248,8 @@ require_once "./components/navbar.php";
 
     const userId = document.getElementById("user_id").value
     const carId = document.getElementById("car_id").value
-
-
+    let isCreate = false;
+    let reviewId = null;
     bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         let valid = true;
@@ -262,23 +273,23 @@ require_once "./components/navbar.php";
         }
 
         if (!valid) {
-           return  // Prevent form submission if invalid
+            return // Prevent form submission if invalid
         }
         try {
-            
+
             const data = {
                 userId,
                 carId,
-                place : placeInput.value,
-                date : dateInput.value
+                place: placeInput.value,
+                date: dateInput.value
             }
-            const res = await axios.post("../actions/reservation/create.php",data)
-            if(res.data.success){
+            const res = await axios.post("../actions/reservation/create.php", data)
+            if (res.data.success) {
                 showToast(res.data.success)
                 bookModal.classList.add("hidden");
                 window.location.reload();
-            }else {
-                showToast(res.data.error,"error")
+            } else {
+                showToast(res.data.error, "error")
                 window.location.reload();
             }
         } catch (error) {
@@ -288,25 +299,71 @@ require_once "./components/navbar.php";
 
     reviewForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const data = {
-            userId,
-            carId,
-            star : ratingInput.value
-        }
-        try {
-            const res = await axios.post("../actions/cars/add_review.php",data); 
-            if(res.data.success){
-                showToast(res.data.success)
-                reviewModal.classList.add("hidden");
-                window.location.reload();
-            }else {
-                showToast(res.data.error,'error')
+        if (!isCreate) {
+            const data = {
+                reviewId,
+                star: ratingInput.value
             }
-        } catch (error) {
-            console.log(error)
-        }
+            try {
+                const res = await axios.post("../actions/review/update.php", data);
+                console.log("from update", res);
+                if (res.data.success) {
+                    showToast(res.data.success)
+                    reviewModal.classList.add("hidden");
+                    window.location.reload();
+                } else {
+                    showToast(res.data.error, 'error')
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            const data = {
+                userId,
+                carId,
+                star: ratingInput.value
+            }
+            try {
+                const res = await axios.post("../actions/review/create.php", data);
+                console.log("from create", res);
+                if (res.data.success) {
+                    showToast(res.data.success)
+                    reviewModal.classList.add("hidden");
+                    window.location.reload();  
+                } else {
+                    showToast(res.data.error, 'error')
+                }
+            } catch (error) {
+                console.log(error)
+            }
 
+        }
     })
+
+
+    const editReview = (revId, star) => {
+        ratingInput.value = star;
+        rating_value.textContent = ratingInput.value;
+        reviewModal.classList.remove("hidden");
+        reviewId = revId;
+        isCreate = false;
+    }
+    const deleteReview = async (revId) => {
+       try {
+         const res = await axios.post("../actions/review/archive.php",{
+            reviewId:revId
+         })
+         if(res.data.success){
+            showToast(res.data.success)
+            window.location.reload();
+         }else {
+            console.log(res)
+            showToast(res.data.error,"error");
+         }
+       } catch (error) {
+        console.log(error)
+    }
+    }
 </script>
 <?php
 require_once "./components/navbar.php";

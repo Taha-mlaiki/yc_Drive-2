@@ -30,7 +30,7 @@ class Car
             LEFT JOIN category c ON c.id = v.category_id
             LEFT JOIN review r ON  r.vehicle_id = v.id
             LEFT JOIN users u ON  r.user_id = u.id
-            WHERE v.id = :id
+            WHERE v.id = :id AND r.isArchived = 0;
         ");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -132,21 +132,7 @@ class Car
         $count = $stmt->fetchColumn();
         return $count > 0;
     }
-    static public function addReviewStar($carId, $userId, float $star)
-    {
-        $isReservedCar = self::isUserReservedCard($carId, $userId);
-        if ($isReservedCar) {
-            $db = self::getDb();
-            $stmt = $db->prepare("INSERT INTO review (vehicle_id,user_id,star) VALUES (:carId,:userId,:star)");
-            $stmt->bindParam(":carId", $carId);
-            $stmt->bindParam(":userId", $userId);
-            $stmt->bindParam(":star", $star);
-            $stmt->execute();
-            return $stmt->rowCount() > 0;
-        }else {
-            throw new Error("This has not reserved the car");
-        }
-    }
+
 
     static public function getAll()
     {

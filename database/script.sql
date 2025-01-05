@@ -64,3 +64,6 @@ MODIFY COLUMN star FLOAT
 
 ALTER TABLE reservation 
 ADD COLUMN status ENUM("Pending","Accepted","Canceled") DEFAULT "Pending" 
+
+ALTER TABLE review
+ADD COLUMN isArchived BOOLEAN DEFAULT false
