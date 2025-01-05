@@ -3,6 +3,7 @@ if (file_exists("../classes/Car.php")) {
     include   "../classes/Car.php";
 };
 $id = $_GET["id"];
+
 if (isset($id)) {
     $car = Car::getOneById($id);
 }
@@ -34,7 +35,7 @@ $isReserved = Car::isUserReservedCard($carId, $userId);
                 <?php endif; ?>
                 <div class="mt-3">
                     <span class="font-bold text-blue-500">Modal :</span>
-                    <?= $car["modal"] ?>
+                    <?= $car["vehicle_modal"] ?>
                 </div>
             </div>
 
@@ -121,7 +122,7 @@ $isReserved = Car::isUserReservedCard($carId, $userId);
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" id="reservationForm" action="" method="post">
+                <form class="p-4 md:p-5" id="reservationForm" >
                     <div class="flex flex-col gap-y-2">
                         <label class="font-semibold text-neutral-700" for="reservation_date">Booking Date</label>
                         <input

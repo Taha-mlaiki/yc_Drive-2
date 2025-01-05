@@ -67,3 +67,31 @@ ADD COLUMN status ENUM("Pending","Accepted","Canceled") DEFAULT "Pending"
 
 ALTER TABLE review
 ADD COLUMN isArchived BOOLEAN DEFAULT false
+
+
+
+-- Vue SQL pour la liste des véhicules 
+
+SELECT v.id AS vehicle_id, 
+            v.name AS vehicle_name, 
+            v.description AS vehicle_description, 
+            v.price AS vehicle_price, 
+            v.modal AS vehicle_modal, 
+            v.available AS vehicle_available, 
+            v.imgUrl AS vehicle_image, 
+            c.name AS category, 
+            r.id AS review_id,
+            r.star AS review_star, 
+            u.id AS user_id, 
+            u.username AS user_name
+            FROM vehicle v
+            LEFT JOIN category c ON c.id = v.category_id
+            LEFT JOIN review r ON  r.vehicle_id = v.id
+            LEFT JOIN users u ON  r.user_id = u.id
+            WHERE v.id = :id AND r.isArchived = 0;
+
+DELIMITER &&
+CREATE PROCEDURE createReservation(IN place VARCHAR(255),IN date DATE , IN user_id INT,IN vehicle_id INT)
+BEGIN
+    INSERT INTO reservation (place,date,user_id,vehicle_id) VALUES (place,date,user_id,vehicle_id);
+END &&

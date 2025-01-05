@@ -33,6 +33,14 @@ class Reservation
         $stmt->bindParam(":vehicle_id", $this->carId);
         $stmt->execute();
         return $stmt->rowCount() > 0;
+        $db = self::getDb();
+        $stmt = $db->prepare("CALL createReservation(:place,:date,:user_id,:vehicle_id)");
+        $stmt->bindParam(":place", $this->place);
+        $stmt->bindParam(":date", $this->date);
+        $stmt->bindParam(":user_id", $this->userId);
+        $stmt->bindParam(":vehicle_id", $this->carId);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 
     static public function getAllUserReserv($id)

@@ -14,7 +14,9 @@ class Car
     static public function getOneById($id)
     {
         $db = self::getDb();
-        $stmt = $db->prepare("SELECT v.id AS vehicle_id, 
+        $stmt = $db->prepare("
+        SELECT 
+            v.id AS vehicle_id, 
             v.name AS vehicle_name, 
             v.description AS vehicle_description, 
             v.price AS vehicle_price, 
@@ -26,45 +28,50 @@ class Car
             r.star AS review_star, 
             u.id AS user_id, 
             u.username AS user_name
-            FROM vehicle v
-            LEFT JOIN category c ON c.id = v.category_id
-            LEFT JOIN review r ON  r.vehicle_id = v.id
-            LEFT JOIN users u ON  r.user_id = u.id
-            WHERE v.id = :id AND r.isArchived = 0;
-        ");
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        FROM vehicle v
+        LEFT JOIN category c ON c.id = v.category_id
+        LEFT JOIN review r ON r.vehicle_id = v.id AND r.isArchived = 0
+        LEFT JOIN users u ON r.user_id = u.id
+        WHERE v.id = :id
+    ");
+        try {
+            $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
 
-        if (!empty($results)) {
-            $vehicle = [
-                'vehicle_id' => $results[0]['vehicle_id'],
-                'vehicle_name' => $results[0]['vehicle_name'],
-                'vehicle_description' => $results[0]['vehicle_description'],
-                'vehicle_price' => $results[0]['vehicle_price'],
-                'modal' => $results[0]['vehicle_modal'],
-                'available' => $results[0]['vehicle_available'],
-                'category' => $results[0]['category'],
-                'vehicle_image' => $results[0]['vehicle_image'],
-                'review_id' => $results[0]['review_id'],
-                'reviews' => []
-            ];
+            if ($stmt->rowCount() > 0) {
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $vehicle = [
+                    'vehicle_id' => $results[0]['vehicle_id'],
+                    'vehicle_name' => $results[0]['vehicle_name'],
+                    'vehicle_description' => $results[0]['vehicle_description'],
+                    'vehicle_price' => $results[0]['vehicle_price'],
+                    'vehicle_modal' => $results[0]['vehicle_modal'],
+                    'available' => $results[0]['vehicle_available'],
+                    'category' => $results[0]['category'],
+                    'vehicle_image' => $results[0]['vehicle_image'],
+                    'reviews' => [],
+                ];
 
-            foreach ($results as $row) {
-                if ($row['review_id']) { // Ensure the review exists
-                    $vehicle['reviews'][] = [
-                        'review_id' => $row['review_id'],
-                        'stars' => $row['review_star'],
-                        'user' => [
-                            'user_id' => $row['user_id'],
-                            'user_name' => $row['user_name'],
-                        ]
-                    ];
+                foreach ($results as $row) {
+                    if ($row['review_id']) {
+                        $vehicle['reviews'][] = [
+                            'review_id' => $row['review_id'],
+                            'stars' => $row['review_star'],
+                            'user' => [
+                                'user_id' => $row['user_id'],
+                                'user_name' => $row['user_name'],
+                            ]
+                        ];
+                    }
                 }
+
+                return $vehicle;
             }
-            return $vehicle;
+        } catch (PDOException $th) {
+            throw new Error($th->getMessage());
         }
-        return null;
+
+        return null; // Explicitly return null if no vehicle is found
     }
     public function getVar(string $varname)
     {
@@ -125,7 +132,7 @@ class Car
     static public function isUserReservedCard($carId, $userId)
     {
         $db = self::getDb();
-        $stmt = $db->prepare("SELECT COUNT(*) FROM users u JOIN reservation r ON r.user_id = u.id JOIN vehicle v ON r.vehicle_id = v.id WHERE v.id = :carId AND u.id = :userId");
+        $stmt = $db->prepare("SELECT COUNT(*) FROM users u JOIN reservation r ON r.user_id = u.id JOIN vehicle v ON r.vehicle_id = v.id WHERE v.id = :carId AND u.id = :userId AND r.status = 'Accepted'");
         $stmt->bindParam(":carId", $carId);
         $stmt->bindParam(":userId", $userId);
         $stmt->execute();

@@ -92,7 +92,9 @@ $reservations = Reservation::getAllUserReserv($userid);
                             </td>
                             <?php if ($reserv["reservation_status"] !== "Canceled") : ?>
                                 <td class="px-6 py-4">
-                                    <button onclick="cancelReservation(<?php echo json_encode($reserv['reservation_id']); ?>)">Cancel</button>
+                                    <button onclick="cancelReservation(<?php echo json_encode($reserv['reservation_id']); ?>)"
+                                    class="text-sm text-white bg-red-500 rounded-lg p-2"
+                                    >Cancel</button>
                                 </td>
                             <?php endif; ?>
                         </tr>
@@ -134,7 +136,9 @@ $reservations = Reservation::getAllUserReserv($userid);
         })
         if (res.data.success) {
             showToast(res.data.success);
-            window.location.reload();
+            setTimeout(()=>{
+                window.location.reload();
+            },1000)
         } else {
             showToast(res.data.error, "error")
         }

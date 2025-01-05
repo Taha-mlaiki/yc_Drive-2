@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (User::checkExist($email)) {
         http_response_code(400);
-        echo json_encode(['error' => 'User already exist.']);
+        echo json_encode(['error' => 'Username or email already exist.']);
         exit();
     }
     try {
