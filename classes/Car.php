@@ -136,19 +136,35 @@ class Car
 
     static public function getAll()
     {
+
         $db = self::getDb();
         $stmt = $db->prepare("SELECT v.*, c.name AS category_name FROM vehicle v JOIN category c ON v.category_id = c.id");
         $stmt->execute();
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
-    static public function getAvailable()
+    static public function getAvailable($page, $limit)
     {
+        $offset = ($page - 1) * $limit;
         $db = self::getDb();
-        $stmt = $db->prepare("SELECT v.*, c.name AS category_name FROM vehicle v JOIN category c ON v.category_id = c.id WHERE v.available = true");
+
+        $stmt = $db->prepare("SELECT v.*, c.name AS category_name 
+        FROM vehicle v 
+        JOIN category c ON v.category_id = c.id 
+        WHERE v.available = 1 
+        LIMIT ?, ?");
+        $stmt->bindValue(1, $offset, PDO::PARAM_INT);
+        $stmt->bindValue(2, $limit, PDO::PARAM_INT);
         $stmt->execute();
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $res;
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $total = $db->prepare("SELECT COUNT(*) FROM vehicle WHERE available = 1 ");
+        $total->execute();
+        $toatlRecords = $total->fetchColumn();
+
+        $totalPages = ceil($toatlRecords / $limit);
+
+        return ["cars" => $data, "toatlRecords" => $toatlRecords, "totalPages" => $totalPages];
     }
     static public function deleteOne($id)
     {
