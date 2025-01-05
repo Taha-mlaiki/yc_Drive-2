@@ -12,7 +12,7 @@ $totalUsers = User::userStatistiques("SELECT COUNT(*) FROM users");
 <div class="min-h-screen flex flex-col">
     <?php include "./components/navbar.php" ?>
     <div class="relative flex flex-1">
-        <aside id="default-sidebar" class="w-64">
+        <aside id="default-sidebar" class="w-64 shadow-lg -z-20">
             <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                 <ul class="space-y-2 font-medium mt-10">
                     <li>

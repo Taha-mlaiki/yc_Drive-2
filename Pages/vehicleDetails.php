@@ -85,12 +85,12 @@ $isReserved = Car::isUserReservedCard($carId, $userId);
                                 <!-- Half-filled star -->
                                 <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                     <defs>
-                                        <linearGradient id="half-star" x1="0" x2="22" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+                                        <linearGradient id="half-star-<?php echo $i; ?>" x1="0" x2="22" y1="0" y2="0" gradientUnits="userSpaceOnUse">
                                             <stop offset="50%" stop-color="#F59E0B" />
                                             <stop offset="50%" stop-color="#E5E7EB" />
                                         </linearGradient>
                                     </defs>
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" fill="url(#half-star)" />
+                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" fill="url(#half-star-<?php echo $i; ?>)" />
                                 </svg>
                             <?php else: ?>
                                 <!-- Empty star -->
@@ -122,7 +122,7 @@ $isReserved = Car::isUserReservedCard($carId, $userId);
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" id="reservationForm" >
+                <form class="p-4 md:p-5" id="reservationForm">
                     <div class="flex flex-col gap-y-2">
                         <label class="font-semibold text-neutral-700" for="reservation_date">Booking Date</label>
                         <input
@@ -330,7 +330,7 @@ $isReserved = Car::isUserReservedCard($carId, $userId);
                 if (res.data.success) {
                     showToast(res.data.success)
                     reviewModal.classList.add("hidden");
-                    window.location.reload();  
+                    window.location.reload();
                 } else {
                     showToast(res.data.error, 'error')
                 }
@@ -350,20 +350,20 @@ $isReserved = Car::isUserReservedCard($carId, $userId);
         isCreate = false;
     }
     const deleteReview = async (revId) => {
-       try {
-         const res = await axios.post("../actions/review/archive.php",{
-            reviewId:revId
-         })
-         if(res.data.success){
-            showToast(res.data.success)
-            window.location.reload();
-         }else {
-            console.log(res)
-            showToast(res.data.error,"error");
-         }
-       } catch (error) {
-        console.log(error)
-    }
+        try {
+            const res = await axios.post("../actions/review/archive.php", {
+                reviewId: revId
+            })
+            if (res.data.success) {
+                showToast(res.data.success)
+                window.location.reload();
+            } else {
+                console.log(res)
+                showToast(res.data.error, "error");
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 </script>
 <?php
