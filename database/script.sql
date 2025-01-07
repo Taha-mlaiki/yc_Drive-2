@@ -95,3 +95,55 @@ CREATE PROCEDURE createReservation(IN place VARCHAR(255),IN date DATE , IN user_
 BEGIN
     INSERT INTO reservation (place,date,user_id,vehicle_id) VALUES (place,date,user_id,vehicle_id);
 END &&
+
+
+CREATE TABLE theme (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    image TEXT,
+    title VARCHAR(255) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE blog (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    image TEXT,
+    video TEXT,
+    title VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
+    user_id INT NOT NULL,
+    theme_id INT NOT NULL,
+    isPublished BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (theme_id) REFERENCES theme(id)
+);
+
+CREATE TABLE tag (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE blog_tag (
+    blog_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    PRIMARY KEY (blog_id, tag_id),
+    FOREIGN KEY (blog_id) REFERENCES blog(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE
+);
+
+CREATE TABLE comment (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    body TEXT NOT NULL,
+    user_id INT NOT NULL,
+    blog_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (blog_id) REFERENCES blog(id) ON DELETE CASCADE
+);
+
+CREATE TABLE favorit (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    blog_id INT NOT NULL,
+    UNIQUE(user_id, blog_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (blog_id) REFERENCES blog(id) ON DELETE CASCADE
+);
