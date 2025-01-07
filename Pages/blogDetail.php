@@ -83,17 +83,22 @@ require_once "./components/navbar.php";
             <h3 class="font-semibold p-1">Discussion</h3>
             <!-- Comment Container -->
             <div class="flex flex-col gap-5 m-3">
-                <div class="flex w-full justify-between border rounded-md">
-
-                    <div class="p-3">
-                        <div class="flex gap-3 items-center">
-                            <img src="https://avatars.githubusercontent.com/u/22263436?v=4"
-                                class="object-cover w-10 h-10 rounded-full border-2 border-emerald-400  shadow-emerald-400">
-                            <h3 class="font-bold">
-                                User 1
-                                <br>
-                                <span class="text-sm text-gray-400 font-normal">Level 1</span>
-                            </h3>
+                <div class="flex w-full justify-between items-start  border rounded-md">
+                    <div class="p-3 w-full">
+                        <div class="flex items-center justify-between w-full">
+                            <div class="flex gap-3 items-start w-full">
+                                <img src="https://avatars.githubusercontent.com/u/22263436?v=4"
+                                    class="object-cover w-10 h-10 rounded-full border-2 border-emerald-400  shadow-emerald-400">
+                                <h3 class="font-bold">
+                                    User 1
+                                    <br>
+                                    <span class="text-sm text-gray-400 font-normal">Level 1</span>
+                                </h3>
+                            </div>
+                            <div class="flex items-center gap-x-2 ms-auto w-fit">
+                                <img src="../assets/images/editPen.svg" class="w-6 h-6 cursor-pointer ">
+                            <img src="../assets/images/delete.svg" class="w-6 h-6 cursor-pointer">
+                            </div>
                         </div>
                         <p class="text-gray-600 mt-2">
                             this is sample commnent
