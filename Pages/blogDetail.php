@@ -1,15 +1,16 @@
 <?php
 require_once "./components/header.php";
 require_once "./components/navbar.php";
-
-
 ?>
 <main>
-    <div class="flex flex-col">
-        <div class="bg-gray-100 py-8">
+    <div class="flex flex-col bg-gray-100">
+        <div class="container py-8 flex items-center justify-between">
             <div class="container mx-auto px-4">
                 <h1 class="text-4xl font-bold text-gray-800 mb-2">Blog Title Here</h1>
                 <p class="text-gray-600">Published on April 4, 2023</p>
+            </div>
+            <div>
+                <img id="heart" src="../assets/images/filedHeart.svg" alt="" class="w-16 ">
             </div>
         </div>
         <div class="bg-white py-8">
@@ -97,7 +98,7 @@ require_once "./components/navbar.php";
                             </div>
                             <div class="flex items-center gap-x-2 ms-auto w-fit">
                                 <img src="../assets/images/editPen.svg" class="w-6 h-6 cursor-pointer ">
-                            <img src="../assets/images/delete.svg" class="w-6 h-6 cursor-pointer">
+                                <img src="../assets/images/delete.svg" class="w-6 h-6 cursor-pointer">
                             </div>
                         </div>
                         <p class="text-gray-600 mt-2">
@@ -109,8 +110,22 @@ require_once "./components/navbar.php";
         </div>
     </div>
 </main
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  document.getElementById("heart").addEventListener("click", function () {
+        // Get the image element
+        const heartImage = this;
+        
+        // Check the current src and toggle it
+        if (heartImage.src.includes("emptyHeart.svg")) {
+            heartImage.src = "../assets/images/filedHeart.svg";
+        } else {
+            heartImage.src = "../assets/images/emptyHeart.svg";
+        }
+    });
 </script>
+
 
 
 

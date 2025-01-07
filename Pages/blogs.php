@@ -4,7 +4,7 @@ require_once "./components/navbar.php";
 
 
 ?>
-<main>
+<main class="container">
     <div class="flex items-center justify-center">
         <div class="relative w-full max-w-xl my-10 mx-auto bg-white rounded-full">
             <input placeholder="Search by blog title" class="rounded-full w-full h-16 bg-transparent py-2 pl-8 pr-32 outline-none border-2 border-gray-100 shadow-md hover:outline-none focus:ring-primary/50 focus:border-primary/50" type="text" name="query" id="query">
@@ -16,12 +16,20 @@ require_once "./components/navbar.php";
             </button>
         </div>
     </div>
+    <form class="mb-20 mt-10">
+        <select id="category_list" class="bg-gray-50 border border-gray-300 w-44 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+            <option selected>Filter by tags</option>
+            <option>Somthing</option>
+            <option>heree</option>
+        </select>
+    </form>
     <div class="container my-8 grid md:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col overflow-hidden rounded-lg shadow-lg">
             <div class="flex-shrink-0">
                 <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1679&amp;q=80" alt="">
             </div>
-            <div class="flex flex-1 flex-col justify-between bg-white p-6">
+            <div class="flex flex-1 flex-col justify-between bg-white relative p-6">
+            <img id="heart1" src="../assets/images/emptyHeart.svg" alt="" class="absolute top-2 right-2 w-10 cursor-pointer">
                 <div class="flex-1">
                     <p class="text-sm font-medium text-indigo-600">
                         <a href="#" class="hover:underline">Article</a>
@@ -60,7 +68,19 @@ require_once "./components/navbar.php";
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+<script>
+     document.getElementById("heart1").addEventListener("click", function () {
+        // Get the image element
+        const heartImage = this;
+        
+        // Check the current src and toggle it
+        if (heartImage.src.includes("emptyHeart.svg")) {
+            heartImage.src = "../assets/images/filedHeart.svg";
+        } else {
+            heartImage.src = "../assets/images/emptyHeart.svg";
+        }
+    });
+</script>
 
 
 <?php require_once "./components/footer.php"; ?>
