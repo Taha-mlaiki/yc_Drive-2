@@ -12,7 +12,7 @@ $totalUsers = User::userStatistiques("SELECT COUNT(*) FROM users");
 <div class="min-h-screen flex flex-col">
     <?php include "./components/navbar.php" ?>
     <div class="relative flex flex-1">
-        <aside id="default-sidebar" class="w-64 shadow-lg -z-20">
+        <aside id="default-sidebar" class="w-64 ">
             <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                 <ul class="space-y-2 font-medium mt-10">
                     <li>
@@ -34,6 +34,12 @@ $totalUsers = User::userStatistiques("SELECT COUNT(*) FROM users");
                         <a href="./categories.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700 group">
                             <img src="../assets/images/category.png" class="w-5 h-5" alt="">
                             <span class="ms-3">Categories</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./comments.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white dark:hover:bg-gray-700 group">
+                            <img src="../assets/images/car.svg" alt="" class="w-5 h-5">
+                            <span class="ms-3">Comments</span>
                         </a>
                     </li>
                 </ul>

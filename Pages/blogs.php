@@ -46,7 +46,6 @@ require_once "./components/navbar.php";
                 </div>
             </div>
         </div>
-
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

@@ -27,6 +27,12 @@ include "./components/header.php" ?>
                             <span class="ms-3">Categories</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="./comments.php" class="flex items-center p-2  text-gray-900 rounded-lg dark:text-white dark:hover:bg-gray-700 group">
+                            <img src="../assets/images/car.svg" alt="" class="w-5 h-5">
+                            <span class="ms-3">Comments</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </aside>
