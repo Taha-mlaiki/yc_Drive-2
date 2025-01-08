@@ -38,5 +38,14 @@ class Comment
         return $stmt->rowCount();
     }
 
+    public static function deleteComment($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("DELETE comment WHERE id = :id");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+  
 
 }
