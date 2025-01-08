@@ -46,6 +46,6 @@ class Comment
         $stmt->execute();
         return $stmt->rowCount();
     }
-  
+
 
 }
