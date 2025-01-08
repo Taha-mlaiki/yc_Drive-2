@@ -25,5 +25,22 @@ class Tag
     }
 
 
+    public function editTag($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("UPDATE tag SET name = :name  WHERE id = :id");
+        $stmt->bindParam(":name", $this->name, PDO::PARAM_STR);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+    public static function deleteTag($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("DELETE tag WHERE id = :id");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+     }
 
 }
