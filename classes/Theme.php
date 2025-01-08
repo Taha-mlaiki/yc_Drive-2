@@ -47,9 +47,18 @@ class Theme
         $db = self::getDb();
         $stmt = $db->prepare("SELECT * FROM theme");
         $stmt->execute();
-        if($stmt->rowCount() > 1){
+        if ($stmt->rowCount() > 1) {
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $res;
         }
+    }
+    public static function checkExist($title, $description)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT * FROM theme WHERE title = :title AND description = :description ");
+        $stmt->bindParam(":title", $title);
+        $stmt->bindParam(":description", $description);
+        $stmt->execute();
+        return $stmt->rowCount() > 1;
     }
 }
