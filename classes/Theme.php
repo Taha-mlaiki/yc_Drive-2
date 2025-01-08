@@ -21,4 +21,15 @@ class Theme
         $stmt->execute();
         return $stmt->rowCount();
     }
+    public function updateTheme ($id){
+        $db = self::getDb();
+        $stmt = $db->prepare("UPDATE theme SET image = :image, title = :title, description :description WHERE id = :id");
+        $stmt->bindParam(":image",$this->image,PDO::PARAM_STR);
+        $stmt->bindParam(":title",$this->title,PDO::PARAM_STR);
+        $stmt->bindParam(":description",$this->description,PDO::PARAM_STR);
+        $stmt->bindParam(":id",$id,PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+    
 }
