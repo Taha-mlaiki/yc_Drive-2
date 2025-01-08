@@ -26,4 +26,15 @@ class Favorit
         return $stmt->rowCount();
     }
 
+    
+    public static function removeFromFavorit($user_id,$blog_id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("DELETE favorit WHERE user_id = :user_id AND blog_id = :blog_id");
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(":blog_id", $blog_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
 }
