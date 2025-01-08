@@ -53,6 +53,17 @@ class Blog
         $stmt->execute();
         return $stmt->rowCount();
     }
-
+    public static function getBlogById($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT * FROM theme WHERE id = :id");
+        $stmt->bindParam(":id",$id);
+        $stmt->execute();
+        if ($stmt->rowCount() > 1) {
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $res;
+        }
+    }
+    
    
 }
