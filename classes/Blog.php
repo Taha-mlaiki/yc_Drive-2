@@ -45,5 +45,14 @@ class Blog
         $stmt->execute();
         return $stmt->rowCount();
     }
-    
+    public static function deleteBlog($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("DELETE blog WHERE id = :id");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
+   
 }
