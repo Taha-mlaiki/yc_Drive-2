@@ -42,4 +42,14 @@ class Theme
         $stmt->execute();
         return $stmt->rowCount();
     }
+    public static function getAllThemes()
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT * FROM theme");
+        $stmt->execute();
+        if($stmt->rowCount() > 1){
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $res;
+        }
+    }
 }
