@@ -33,5 +33,17 @@ class Blog
         $stmt->execute();
         return $stmt->rowCount();
     }
- 
+    public function updateBlog($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("UPDATE blog SET image = :image, video = :video, title = :title, body :body WHERE id = :id");
+        $stmt->bindParam(":image", $this->image, PDO::PARAM_STR);
+        $stmt->bindParam(":video", $this->video, PDO::PARAM_STR);
+        $stmt->bindParam(":title", $this->title, PDO::PARAM_STR);
+        $stmt->bindParam(":body", $this->body, PDO::PARAM_STR);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+    
 }
