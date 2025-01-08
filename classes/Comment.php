@@ -28,6 +28,15 @@ class Comment
         return $stmt->rowCount();
     }
 
-   
+    public function updateComment($id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("UPDATE comment SET body :body WHERE id = :id");
+        $stmt->bindParam(":body", $this->body, PDO::PARAM_STR);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
 
 }
