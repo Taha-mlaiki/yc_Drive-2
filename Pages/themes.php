@@ -3,13 +3,13 @@ include "./components/header.php" ?>
 <div class="min-h-screen flex flex-col">
     <?php include "./components/navbar.php" ?>
     <div class="relative flex flex-1">
-    <?php include "./components/sideBar.php" ?>
+        <?php include "./components/sideBar.php" ?>
         <div class="relative flex-1 p-6 overflow-auto">
             <main class="px-5 flex-grow h-full lg:px-10 mt-5">
                 <div class="flex items-center justify-between mt-10">
                     <h2 class="font-semibold text-neutral-700  flex items-center gap-x-2 text-lg">
-                        <img src="../assets/images/comments.svg" alt="" class="w-5 h-5">
-                        Comments
+                        <img src="../assets/images/themes.svg" alt="" class="w-5 h-5">
+                        Themes
                     </h2>
             
                 </div>
@@ -18,13 +18,13 @@ include "./components/header.php" ?>
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    User email
+                                    Theme Image
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Comment
+                                    Theme title
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    blog name
+                                    Theme description
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Actions

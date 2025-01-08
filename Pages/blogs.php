@@ -16,20 +16,29 @@ require_once "./components/navbar.php";
             </button>
         </div>
     </div>
-    <form class="mb-20 mt-10">
-        <select id="category_list" class="bg-gray-50 border border-gray-300 w-44 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
-            <option selected>Filter by tags</option>
-            <option>Somthing</option>
-            <option>heree</option>
-        </select>
-    </form>
+    <div class="flex items-center justify-between">
+        <form class="mb-20 mt-10">
+            <select id="category_list" class="bg-gray-50 border border-gray-300 w-44 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+                <option selected>Filter by tags</option>
+                <option>Somthing</option>
+                <option>heree</option>
+            </select>
+        </form>
+        <form class="mb-20 mt-10">
+            <select id="category_list" class="bg-gray-50 border border-gray-300 w-20   text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary">
+                <option>5</option>
+                <option>10</option>
+            </select>
+        </form>
+
+    </div>
     <div class="container my-8 grid md:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col overflow-hidden rounded-lg shadow-lg">
             <div class="flex-shrink-0">
                 <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1679&amp;q=80" alt="">
             </div>
             <div class="flex flex-1 flex-col justify-between bg-white relative p-6">
-            <img id="heart1" src="../assets/images/emptyHeart.svg" alt="" class="absolute top-2 right-2 w-10 cursor-pointer">
+                <img id="heart1" src="../assets/images/emptyHeart.svg" alt="" class="absolute top-2 right-2 w-10 cursor-pointer">
                 <div class="flex-1">
                     <p class="text-sm font-medium text-indigo-600">
                         <a href="#" class="hover:underline">Article</a>
@@ -66,13 +75,38 @@ require_once "./components/navbar.php";
             </div>
         </div>
     </div>
+    <nav class="flex items-center justify-center my-20" >
+        <ul class="inline-flex -space-x-px text-sm">
+            <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+            </li>
+            <li>
+                <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+            </li>
+        </ul>
+    </nav>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-     document.getElementById("heart1").addEventListener("click", function () {
+    document.getElementById("heart1").addEventListener("click", function() {
         // Get the image element
         const heartImage = this;
-        
+
         // Check the current src and toggle it
         if (heartImage.src.includes("emptyHeart.svg")) {
             heartImage.src = "../assets/images/filedHeart.svg";
