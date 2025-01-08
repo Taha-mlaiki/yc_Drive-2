@@ -65,5 +65,15 @@ class Blog
         }
     }
     
-   
+    public static function getAllBlogByThemeId($theme_id)
+    {
+        $db = self::getDb();
+        $stmt = $db->prepare("SELECT * FROM blog where theme_id = :theme_id");
+        $stmt->execute();
+        if ($stmt->rowCount() > 1) {
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $res;
+        }
+    }
+
 }
