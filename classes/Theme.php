@@ -26,7 +26,7 @@ class Theme
     public function updateTheme($id)
     {
         $db = self::getDb();
-        $stmt = $db->prepare("UPDATE theme SET image = :image, title = :title, description :description WHERE id = :id");
+        $stmt = $db->prepare("UPDATE theme SET image = :image, title = :title, description = :description WHERE id = :id");
         $stmt->bindParam(":image", $this->image, PDO::PARAM_STR);
         $stmt->bindParam(":title", $this->title, PDO::PARAM_STR);
         $stmt->bindParam(":description", $this->description, PDO::PARAM_STR);
@@ -37,8 +37,8 @@ class Theme
     public static function deleteTheme($id)
     {
         $db = self::getDb();
-        $stmt = $db->prepare("DELETE theme WHERE  id = :id");
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt = $db->prepare("DELETE FROM theme WHERE  id = :id");
+        $stmt->bindParam(":id",$id);
         $stmt->execute();
         return $stmt->rowCount();
     }
@@ -47,7 +47,7 @@ class Theme
         $db = self::getDb();
         $stmt = $db->prepare("SELECT * FROM theme");
         $stmt->execute();
-        if ($stmt->rowCount() > 1) {
+        if ($stmt->rowCount() >= 1) {
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $res;
         }
